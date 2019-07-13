@@ -1,3 +1,21 @@
+<?php
+include_once("config.php");
+
+$resultBiodata = mysqli_query($mysqli, "SELECT 
+`biodata`.`id`,
+`biodata`.`full_name`, 
+`biodata`.`place_of_birth_id`,
+`cities`.`nama` as `place_of_birth`,
+`biodata`.`date_of_birth`,
+`biodata`.`address`,
+`biodata`.`phone_number`,
+`biodata`.`last_education`,
+`biodata`.`religion`,
+`biodata`.`hobby`
+FROM `biodata` INNER JOIN `cities` WHERE `biodata`.`place_of_birth_id` = `cities`.`id`");
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -22,32 +40,26 @@
         <th scope="col">Pendidikan Terakhir</th>
         <th scope="col">Agama</th>
         <th scope="col">Hobi</th>
+        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Roby Ardianto</td>
-        <td>Pekanbaru</td>
-        <td>09/11/1991</td>
-        <td>081266695495</td>
-        <td>Jalan H. Rausin Blok B No. 93</td>
-        <td>SMK</td>
-        <td>Islam</td>
-        <td>Jajan</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Ar Rasyid Aulian</td>
-        <td>Jakarta</td>
-        <td>04/04/2019</td>
-        <td>08119639555</td>
-        <td>Jalan H. Rausin Blok B No. 93</td>
-        <td>TK</td>
-        <td>Islam</td>
-        <td>Minum susu</td>
-      </tr>
-      
+      <?php
+        while($biodata = mysqli_fetch_array($resultBiodata)) {         
+            echo "<tr>";
+            echo "<th scope='row'>1</th>";
+            echo "<td>".$biodata['full_name']."</td>";
+            echo "<td>".$biodata['place_of_birth']."</td>";
+            echo "<td>".$biodata['date_of_birth']."</td>";       
+            echo "<td>".$biodata['phone_number']."</td>";   
+            echo "<td>".$biodata['address']."</td>";  
+            echo "<td>".$biodata['last_education']."</td>";   
+            echo "<td>".$biodata['religion']."</td>";   
+            echo "<td>".$biodata['hobby']."</td>";   
+            echo "<td><a href='form-edit.php?id=$biodata[id]'>Edit</a> 
+            | <a href='delete.php?id=$biodata[id]'>Delete</a></td></tr>";        
+        }
+      ?>
     </tbody>
   </table>
   </body>
